@@ -10,13 +10,16 @@ import {
   Star,
   Download,
   Share2,
-  Eye
+  Eye,
+  LogIn
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { useAuth } from "@/contexts/AuthContext";
 
 const Index = () => {
+  const { user } = useAuth();
   const features = [
     {
       icon: Trophy,
@@ -91,9 +94,15 @@ const Index = () => {
             <Link to="/portfolio/student-demo">
               <Button variant="outline">View Demo</Button>
             </Link>
-            <Link to="/dashboard">
-              <Button variant="gradient">Get Started</Button>
-            </Link>
+            {user ? (
+              <Link to="/dashboard">
+                <Button variant="gradient">Dashboard</Button>
+              </Link>
+            ) : (
+              <Link to="/auth">
+                <Button variant="gradient">Get Started</Button>
+              </Link>
+            )}
           </nav>
         </div>
       </header>
@@ -120,12 +129,21 @@ const Index = () => {
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-              <Link to="/dashboard">
-                <Button variant="gradient" size="lg" className="text-lg px-8">
-                  Start Building
-                  <ArrowRight className="h-5 w-5 ml-2" />
-                </Button>
-              </Link>
+              {user ? (
+                <Link to="/dashboard">
+                  <Button variant="gradient" size="lg" className="text-lg px-8">
+                    Go to Dashboard
+                    <ArrowRight className="h-5 w-5 ml-2" />
+                  </Button>
+                </Link>
+              ) : (
+                <Link to="/auth">
+                  <Button variant="gradient" size="lg" className="text-lg px-8">
+                    Start Building
+                    <LogIn className="h-5 w-5 ml-2" />
+                  </Button>
+                </Link>
+              )}
               <Link to="/portfolio/student-demo">
                 <Button variant="outline" size="lg" className="text-lg px-8">
                   <Eye className="h-5 w-5 mr-2" />
@@ -224,12 +242,21 @@ const Index = () => {
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link to="/dashboard">
-                <Button variant="hero" size="lg" className="text-lg px-8">
-                  Start For Free
-                  <ArrowRight className="h-5 w-5 ml-2" />
-                </Button>
-              </Link>
+              {user ? (
+                <Link to="/dashboard">
+                  <Button variant="hero" size="lg" className="text-lg px-8">
+                    Go to Dashboard
+                    <ArrowRight className="h-5 w-5 ml-2" />
+                  </Button>
+                </Link>
+              ) : (
+                <Link to="/auth">
+                  <Button variant="hero" size="lg" className="text-lg px-8">
+                    Start For Free
+                    <ArrowRight className="h-5 w-5 ml-2" />
+                  </Button>
+                </Link>
+              )}
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16 pt-16 border-t border-white/20">

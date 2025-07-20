@@ -10,13 +10,15 @@ import {
   Eye,
   Plus,
   Search,
-  Bell
+  Bell,
+  LogOut
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { useAuth } from "@/contexts/AuthContext";
 
 const sidebarItems = [
   { icon: User, label: "Profile", path: "/dashboard" },
@@ -28,6 +30,7 @@ const sidebarItems = [
 ];
 
 const Dashboard = () => {
+  const { user, signOut } = useAuth();
   const location = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
@@ -86,15 +89,19 @@ const Dashboard = () => {
             <Button variant="ghost" size="icon">
               <Bell className="h-5 w-5" />
             </Button>
-            <Link to="/portfolio/student-demo">
+            <Link to={`/portfolio/${user?.email?.split('@')[0] || 'demo'}`}>
               <Button variant="outline" size="sm">
                 <Eye className="h-4 w-4" />
                 View Portfolio
               </Button>
             </Link>
+            <Button variant="ghost" size="sm" onClick={signOut}>
+              <LogOut className="h-4 w-4" />
+              Sign Out
+            </Button>
             <Avatar>
               <AvatarImage src="https://images.unsplash.com/photo-1649972904349-6e44c42644a7?w=32&h=32&fit=crop&crop=face" />
-              <AvatarFallback>JS</AvatarFallback>
+              <AvatarFallback>{user?.email?.charAt(0).toUpperCase() || 'U'}</AvatarFallback>
             </Avatar>
           </div>
         </div>
@@ -128,7 +135,7 @@ const Dashboard = () => {
             <div className="bg-gradient-hero rounded-xl p-6 text-white shadow-elegant">
               <div className="flex items-center justify-between">
                 <div>
-                  <h2 className="text-2xl font-bold mb-2">Welcome back, Sarah! 👋</h2>
+                  <h2 className="text-2xl font-bold mb-2">Welcome back, {user?.email?.split('@')[0] || 'Student'}! 👋</h2>
                   <p className="text-white/80">Ready to showcase your amazing work today?</p>
                 </div>
                 <Button variant="hero" size="lg">
